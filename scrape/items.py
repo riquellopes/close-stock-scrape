@@ -6,7 +6,8 @@
 import scrapy
 
 
-class ScrapeItem(scrapy.Item):
+class StockItem(scrapy.Item):
     # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+    code = scrapy.Field()
+    url = scrapy.Field()
+    last_price = scrapy.Field()
