@@ -5,9 +5,17 @@
 
 
 # useful for handling different item types with a single interface
+import json
 from itemadapter import ItemAdapter
 
 
 class ScrapePipeline:
     def process_item(self, item, spider):
+        self._file.write(f"{json.dumps(dict(item))}\n")
         return item
+    
+    def open_spider(self, spider):
+        self._file = open('prices.txt', 'w')
+    
+    def close_spider(self, spider):
+        self._file.close()
