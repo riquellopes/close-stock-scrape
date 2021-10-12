@@ -10,9 +10,7 @@ class AdvSpider(scrapy.Spider):
     allowed_domains = ['br.advfn.com']
 
     def start_requests(self):
-        for letter in list(string.ascii_uppercase):
-            yield scrapy.Request(
-                f'https://br.advfn.com/bolsa-de-valores/bovespa/{letter}', self.parse)
+        return (scrapy.Request(f'https://br.advfn.com/bolsa-de-valores/bovespa/{letter}', self.parse) for letter in list(string.ascii_uppercase))
 
     def parse(self, response):
         settings = get_project_settings()
