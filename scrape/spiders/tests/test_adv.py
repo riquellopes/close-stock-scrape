@@ -19,11 +19,15 @@ def dummy_zynga():
     return HtmlResponse(
         url='https://br.advfn.com/bolsa-de-valores/bovespa/zynga-Z2NZ34/historico/mais-dados-historicos', body=read('zynga'))
 
-
 @pytest.fixture()
 def dummy_letter_b(): 
     return HtmlResponse(
         url='https://br.advfn.com/bolsa-de-valores/bovespa/B', body=read('letter_b'))
+
+@pytest.fixture()
+def dummy_notfound(): 
+    return HtmlResponse(
+        url='https://br.advfn.com/bolsa-de-valores/bovespa/4', body=read('notfound'))
 
 def test_should_get_68_14_when_call_dor_stock(dummy_dor):
     spider = AdvSpider(limit=1)
@@ -50,7 +54,6 @@ def test_should_call_with_b2w_data(dummy_letter_b, mocker):
     })
 
     form = mocker.patch('scrape.spiders.adv.FormRequest')
-
     spider = AdvSpider(limit=1)
     next(spider.parse(dummy_letter_b))
 
@@ -60,3 +63,11 @@ def test_should_call_with_b2w_data(dummy_letter_b, mocker):
         callback=spider.parse_stock,
         formdata={'Date1': '23/12/80', 'Date2': '23/12/80'}
     )
+
+def test_should_not_call_service_when_stock_code_notfound(dummy_notfound, mocker):
+    form = mocker.patch('scrape.spiders.adv.FormRequest')
+    spider = AdvSpider(limit=1)
+
+    with pytest.raises(StopIteration):
+        next(spider.parse(dummy_notfound))
+    form.assert_not_called()
