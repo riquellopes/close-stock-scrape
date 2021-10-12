@@ -5,17 +5,19 @@
 
 
 # useful for handling different item types with a single interface
-import json
-from itemadapter import ItemAdapter
+from scrapy.exporters import JsonItemExporter
 
 
 class ScrapePipeline:
     def process_item(self, item, spider):
-        self._file.write(f"{json.dumps(dict(item))}\n")
+        self._exporter.export_item(item)
         return item
     
     def open_spider(self, spider):
-        self._file = open('prices.txt', 'w')
+        self._file = open('stocks.json', 'wb')
+        self._exporter = JsonItemExporter(self._file)
+        self._exporter.start_exporting()
     
     def close_spider(self, spider):
+        self._exporter.finish_exporting()
         self._file.close()
