@@ -44,6 +44,11 @@ def test_should_get_0_when_price_notfound(dummy_zynga):
         url='https://br.advfn.com/bolsa-de-valores/bovespa/zynga-Z2NZ34/historico/mais-dados-historicos') == result
 
 def test_should_call_with_b2w_data(dummy_letter_b, mocker):
+    mocker.patch('scrape.spiders.adv.get_project_settings', return_value={
+        'START_DATE': '23/12/80',
+        'END_DATE': '23/12/80'
+    })
+
     form = mocker.patch('scrape.spiders.adv.FormRequest')
 
     spider = AdvSpider(limit=1)
@@ -53,5 +58,5 @@ def test_should_call_with_b2w_data(dummy_letter_b, mocker):
     form.assert_called_with(
         'https://br.advfn.com/bolsa-de-valores/bovespa/b2w-digital-on-BTOW1/historico/mais-dados-historicos',
         callback=spider.parse_stock,
-        formdata={'Date1': '23/12/20', 'Date2': '23/12/20'}
+        formdata={'Date1': '23/12/80', 'Date2': '23/12/80'}
     )

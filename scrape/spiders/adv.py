@@ -1,5 +1,6 @@
-import scrapy
 import string
+import scrapy
+from scrapy.utils.project import get_project_settings
 from urllib.parse import urlparse
 from scrapy.http import FormRequest
 from scrape.items import StockItem
@@ -14,12 +15,13 @@ class AdvSpider(scrapy.Spider):
                 f'https://br.advfn.com/bolsa-de-valores/bovespa/{letter}', self.parse)
 
     def parse(self, response):
+        settings = get_project_settings()
         for tr in response.css("table.atoz-link-bov")[0].css("tr"):
             url = str(tr.css("td a::attr(href)").extract_first()).replace("cotacao", "historico/mais-dados-historicos")
 
             formdata = {
-                "Date1": "23/12/20",
-                "Date2": "23/12/20"
+                "Date1": settings.get("START_DATE"),
+                "Date2": settings.get("END_DATE")
             }
 
             if urlparse(url).netloc == '':

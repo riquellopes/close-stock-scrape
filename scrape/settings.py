@@ -1,5 +1,8 @@
 # Scrapy settings for scrape project
-#
+import os
+from os.path import join, dirname
+from dotenv import load_dotenv
+
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
 #
@@ -12,6 +15,8 @@ BOT_NAME = 'scrape'
 SPIDER_MODULES = ['scrape.spiders']
 NEWSPIDER_MODULE = 'scrape.spiders'
 
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'scrape (+http://www.yourdomain.com)'
@@ -86,3 +91,7 @@ ITEM_PIPELINES = {
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+# Search configurations
+START_DATE = os.environ.get("START_DATE")
+END_DATE = os.environ.get("END_DATE")
