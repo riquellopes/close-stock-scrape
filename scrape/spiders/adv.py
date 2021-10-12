@@ -1,5 +1,6 @@
 import scrapy
 import string
+from urllib.parse import urlparse
 from scrapy.http import FormRequest
 from scrape.items import StockItem
 
@@ -21,7 +22,7 @@ class AdvSpider(scrapy.Spider):
                 "Date2": "23/12/20"
             }
 
-            if url is None:
+            if urlparse(url).netloc == '':
                 continue
             yield FormRequest(f"https:{url}", callback=self.parse_stock, formdata=formdata)
 
