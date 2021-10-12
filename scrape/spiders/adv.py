@@ -16,14 +16,14 @@ class AdvSpider(scrapy.Spider):
 
     def parse(self, response):
         settings = get_project_settings()
-        for tr in response.css("table.atoz-link-bov")[0].css("tr"):
+        formdata = {
+            "Date1": settings.get("START_DATE"),
+            "Date2": settings.get("END_DATE")
+        }
+        tr_element = response.css("table.atoz-link-bov")[0].css("tr") if response.css("table.atoz-link-bov") else []
+       
+        for tr in tr_element:
             url = str(tr.css("td a::attr(href)").extract_first()).replace("cotacao", "historico/mais-dados-historicos")
-
-            formdata = {
-                "Date1": settings.get("START_DATE"),
-                "Date2": settings.get("END_DATE")
-            }
-
             if urlparse(url).netloc == '':
                 continue
             yield FormRequest(f"https:{url}", callback=self.parse_stock, formdata=formdata)
