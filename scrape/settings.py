@@ -95,3 +95,4 @@ ITEM_PIPELINES = {
 # Search configurations
 START_DATE = os.environ.get("START_DATE")
 END_DATE = os.environ.get("END_DATE")
+AWS_BUCKET = os.environ.get("AWS_BUCKET")
