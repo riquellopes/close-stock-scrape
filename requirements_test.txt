@@ -3,3 +3,4 @@ pytest-mock==3.6.1
 ipython==7.28.0
 ipdb==0.13.9
 flake8==3.9.2
+moto==2.2.10
