@@ -5,7 +5,7 @@ from scrapy.utils.project import get_project_settings
 class JsonS3Exporter(JsonItemExporter):
     
     def __init__(self, name):
-        self._file = open(f'{name}.json', 'r+b')
+        self._file = open(f'/tmp/{name}.json', 'w+b')
         super().__init__(self._file)
 
         # Get the s3 client
@@ -19,7 +19,7 @@ class JsonS3Exporter(JsonItemExporter):
         super().finish_exporting()
         self._file.close()
 
-        with open(f'{self._name}.json', 'r+b') as body:
+        with open(f'/tmp/{self._name}.json', 'r+b') as body:
             return self._s3.put_object(
                 Bucket = self._bucket,
                 Key = self._name,
