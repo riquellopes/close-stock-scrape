@@ -1,0 +1,2 @@
+[run]
+omit = */tests*, scrape/settings.py, scrape/middlewares.py, *__init__.py*
