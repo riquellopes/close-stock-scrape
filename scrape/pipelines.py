@@ -5,8 +5,7 @@
 
 
 # useful for handling different item types with a single interface
-from scrapy.exporters import JsonItemExporter
-
+from scrape.exporters import JsonS3Exporter
 
 class ScrapePipeline:
     def process_item(self, item, spider):
@@ -14,10 +13,8 @@ class ScrapePipeline:
         return item
     
     def open_spider(self, spider):
-        self._file = open('stocks.json', 'wb')
-        self._exporter = JsonItemExporter(self._file)
+        self._exporter = JsonS3Exporter('stocks')
         self._exporter.start_exporting()
     
     def close_spider(self, spider):
         self._exporter.finish_exporting()
-        self._file.close()
