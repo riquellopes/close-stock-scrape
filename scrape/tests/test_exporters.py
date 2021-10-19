@@ -1,3 +1,4 @@
+import os
 import boto3
 from moto import mock_s3
 from scrape.exporters import JsonS3Exporter
@@ -36,3 +37,16 @@ def test_should_not_upload_when_to_bucket_is_False(mocker):
 
     assert hasattr(json, '_s3') is False
     assert json._to_up is False
+
+def test_should_create_a_file_in_temp(mocker):
+    mocker.patch('scrape.exporters.get_project_settings', return_value={
+        'AWS_UPLOAD_TO_BUCKET': False
+    })
+
+    json = JsonS3Exporter('stocks_test')
+    json.start_exporting()
+    
+    json.export_item({"name": "moto"})
+    json.finish_exporting()
+
+    assert os.path.isfile(json.where_is)
