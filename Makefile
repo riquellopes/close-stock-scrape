@@ -8,3 +8,6 @@ clean:
 
 bandit:
 	bandit -r scrape --exclude tests
+
+cover:
+	pytest --cov=scrape
