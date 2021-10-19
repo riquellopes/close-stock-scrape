@@ -59,6 +59,7 @@ instance/
 # Scrapy stuff:
 .scrapy
 stocks.json
+stocks_test.json
 
 # Sphinx documentation
 docs/_build/
