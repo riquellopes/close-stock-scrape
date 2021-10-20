@@ -5,14 +5,15 @@ from scrapy.utils.project import get_project_settings
 class JsonS3Exporter(JsonItemExporter):
     
     def __init__(self, name):
+        settings = get_project_settings()
         self._name = name
+        self._path = settings.get('AWS_LAMBDA_FILE_PATH', '')
         self._file = open(self.where_is, 'w+b')
         super().__init__(self._file)
 
         # Get the s3 client
-        settings = get_project_settings()
         self._to_up = settings.get("AWS_UPLOAD_TO_BUCKET")
-
+        
         if self._to_up:
             self._s3 = boto3.client('s3')
             self._bucket = settings.get("AWS_BUCKET")
@@ -31,4 +32,4 @@ class JsonS3Exporter(JsonItemExporter):
     
     @property
     def where_is(self):
-        return f'/tmp/{self._name}.json'
+        return f'{self._path}{self._name}.json'
