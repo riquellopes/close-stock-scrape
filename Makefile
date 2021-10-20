@@ -10,4 +10,4 @@ bandit:
 	bandit -r scrape --exclude tests
 
 cover:
-	pytest -s -v --cov=scrape --cov-report term-missing
+	pytest -s -v --cov=scrape --cov-report xml
