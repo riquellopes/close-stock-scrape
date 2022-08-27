@@ -1,7 +1,7 @@
 from scrapy.crawler import CrawlerProcess
 from scrape.spiders.adv import AdvSpider
 
-def main(event, context):
+def handler(event, context):
     process = CrawlerProcess({
         'USER_AGENT': 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)',
         'FEED_FORMAT': 'json',
@@ -12,4 +12,4 @@ def main(event, context):
     process.start()
 
 if __name__ == '__main__':
-    main(None, None)
+    handler(None, None)
